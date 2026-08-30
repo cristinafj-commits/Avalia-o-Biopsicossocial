@@ -15,9 +15,10 @@ import {
   ChevronRight,
   Briefcase,
   Building2,
-  FileSpreadsheet
+  FileSpreadsheet,
+  LogOut
 } from 'lucide-react';
-import { AvaliacaoCompleta } from '../types';
+import { AvaliacaoCompleta, AuthUser } from '../types';
 import { DGEPLogo } from './DGEPLogo';
 
 export type AppTab = 'rh_dashboard' | 'medico_dashboard' | 'social_dashboard' | 'form1' | 'form2' | 'form3' | 'form4' | 'social' | 'consolidado' | 'script';
@@ -34,6 +35,8 @@ interface HeaderProps {
   onOpenRecords: () => void;
   onOpenManagementReport: () => void;
   grauFinal?: string;
+  currentUser?: AuthUser | null;
+  onLogout?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -47,6 +50,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenRecords,
   onOpenManagementReport,
   grauFinal,
+  currentUser,
+  onLogout
 }) => {
   const medicoTabs: { id: AppTab; num: string; label: string; subLabel: string; icon: React.ReactNode }[] = [
     {
@@ -147,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* General Actions */}
+          {/* General Actions & User Profile Badge */}
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={onOpenRecords}
@@ -166,6 +171,30 @@ export const Header: React.FC<HeaderProps> = ({
               <FileSpreadsheet className="w-3.5 h-3.5" />
               <span>Relatório Gerencial</span>
             </button>
+
+            {currentUser && (
+              <div className="flex items-center space-x-2 pl-1 border-l border-slate-200">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-left hidden sm:block">
+                  <div className="text-[11px] font-bold text-slate-900 leading-tight truncate max-w-[140px]">
+                    {currentUser.nome}
+                  </div>
+                  <div className="text-[9px] text-slate-500 font-mono truncate max-w-[140px]">
+                    {currentUser.email}
+                  </div>
+                </div>
+
+                {onLogout && (
+                  <button
+                    type="button"
+                    onClick={onLogout}
+                    className="p-1.5 rounded-xl border border-slate-200 bg-white hover:bg-red-50 hover:border-red-200 hover:text-red-600 text-slate-500 transition cursor-pointer shadow-2xs"
+                    title="Sair / Trocar de Usuário CMC"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
         </div>

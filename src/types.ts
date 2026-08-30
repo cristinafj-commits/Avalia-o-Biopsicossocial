@@ -1,5 +1,15 @@
 export type UserProfile = 'rh' | 'medico' | 'social';
 
+export interface AuthUser {
+  email: string;
+  nome: string;
+  perfil: UserProfile;
+  documento?: string; // CRM, CRESS, or Matrícula
+  uf?: string;
+  cargo: string;
+  dataLogin: string;
+}
+
 export type StatusAvaliacaoGeral = 
   | 'solicitado_rh' 
   | 'pendente_pericias' 

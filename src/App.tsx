@@ -12,13 +12,16 @@ import { ConsolidatedReport } from './components/ConsolidatedReport';
 import { AppsScriptAutomation } from './components/AppsScriptAutomation';
 import { RecordsManagerModal } from './components/RecordsManagerModal';
 import { ManagementRequestsReportModal } from './components/ManagementRequestsReportModal';
-import { AvaliacaoCompleta } from './types';
+import { LoginPage } from './components/LoginPage';
+import { AvaliacaoCompleta, AuthUser } from './types';
 import { RASCUNHO_INICIAL, ATIVIDADES_IFBRA_DEF, FUNCOES_CIF_DEF } from './data/initialData';
 import { calcularAvaliacaoBiopsicossocial } from './utils/fuzzyCalculator';
 
 const STORAGE_KEY = 'SISTEMA_BIOPSICOSSOCIAL_RECORDS_V2';
+const AUTH_KEY = 'CMC_AUTH_USER_SESSION_V1';
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [userRole, setUserRole] = useState<UserRole>('rh');
   const [activeTab, setActiveTab] = useState<AppTab>('rh_dashboard');
   const [savedRecords, setSavedRecords] = useState<AvaliacaoCompleta[]>([]);
@@ -27,10 +30,21 @@ export default function App() {
   const [isManagementReportOpen, setIsManagementReportOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-
-  // Load from localStorage on init
+  // Load user session and records from localStorage on init
   useEffect(() => {
     try {
+      const storedAuth = localStorage.getItem(AUTH_KEY);
+      if (storedAuth) {
+        const parsedUser: AuthUser = JSON.parse(storedAuth);
+        if (parsedUser && parsedUser.email && parsedUser.email.endsWith('@cmc.pr.gov.br')) {
+          setCurrentUser(parsedUser);
+          setUserRole(parsedUser.perfil || 'rh');
+          if (parsedUser.perfil === 'medico') setActiveTab('medico_dashboard');
+          else if (parsedUser.perfil === 'social') setActiveTab('social_dashboard');
+          else setActiveTab('rh_dashboard');
+        }
+      }
+
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed: AvaliacaoCompleta[] = JSON.parse(stored);
@@ -50,6 +64,36 @@ export default function App() {
       setSavedRecords([RASCUNHO_INICIAL]);
     }
   }, []);
+
+  const handleLogin = (user: AuthUser) => {
+    setCurrentUser(user);
+    setUserRole(user.perfil);
+    try {
+      localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+    } catch (e) {
+      console.error('Falha ao salvar sessão:', e);
+    }
+
+    if (user.perfil === 'medico') {
+      setActiveTab('medico_dashboard');
+    } else if (user.perfil === 'social') {
+      setActiveTab('social_dashboard');
+    } else {
+      setActiveTab('rh_dashboard');
+    }
+
+    showToast(`Bem-vindo(a), ${user.nome}! Acesso autenticado (@cmc.pr.gov.br).`);
+  };
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem(AUTH_KEY);
+    } catch (e) {
+      console.error('Falha ao limpar sessão:', e);
+    }
+    setCurrentUser(null);
+    showToast('Sessão encerrada com sucesso.');
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -249,6 +293,11 @@ export default function App() {
 
   const calc = calcularAvaliacaoBiopsicossocial(currentEval);
 
+  // If user is not authenticated, show institutional Login Page with @cmc.pr.gov.br verification
+  if (!currentUser) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500 selection:text-white">
       
@@ -264,6 +313,8 @@ export default function App() {
         onOpenRecords={() => setIsModalOpen(true)}
         onOpenManagementReport={() => setIsManagementReportOpen(true)}
         grauFinal={calc.grauDeficienciaFuzzy}
+        currentUser={currentUser}
+        onLogout={handleLogout}
       />
 
       {/* TOAST NOTIFICATION */}
