@@ -69,7 +69,7 @@ export const RHManagementDashboard: React.FC<RHManagementDashboardProps> = ({
       numeroProcesso: `PA-${new Date().getFullYear()}/00${Math.floor(100 + Math.random() * 900)}`,
       dataSolicitacao: new Date().toISOString().split('T')[0],
       motivoSolicitacao: 'Avaliação Biopsicossocial para Enquadramento Funcional (IF-BRA)',
-      orgaoSolicitante: 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP)',
+      orgaoSolicitante: 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP) - Divisão de Saúde Ocupacional',
       gestorResponsavel: 'Mariana Duarte Souza (Gestão de Pessoas)',
       matriculaGestor: 'GP-4402',
       observacoesRH: 'Solicitação autuada para comprovação de enquadramento funcional e adaptação de posto de trabalho.',
@@ -139,7 +139,7 @@ export const RHManagementDashboard: React.FC<RHManagementDashboardProps> = ({
         numeroProcesso: `PA-${new Date().getFullYear()}/00${Math.floor(100 + Math.random() * 900)}`,
         dataSolicitacao: new Date().toISOString().split('T')[0],
         motivoSolicitacao: 'Avaliação Biopsicossocial para Enquadramento Funcional (IF-BRA)',
-        orgaoSolicitante: 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP)',
+        orgaoSolicitante: 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP) - Divisão de Saúde Ocupacional',
         gestorResponsavel: 'Mariana Duarte Souza (Gestão de Pessoas)',
         matriculaGestor: 'GP-4402',
         observacoesRH: 'Solicitação autuada para comprovação de enquadramento funcional e adaptação de posto de trabalho.',
@@ -205,7 +205,7 @@ export const RHManagementDashboard: React.FC<RHManagementDashboardProps> = ({
       ...rec,
       homologadoRH: !rec.homologadoRH,
       dataHomologacao: !rec.homologadoRH ? new Date().toISOString() : undefined,
-      responsavelHomologacao: !rec.homologadoRH ? 'Diretoria de Gestão de Pessoas - Perícias' : undefined,
+      responsavelHomologacao: !rec.homologadoRH ? 'Diretoria de Gestão de Pessoas (DGEP) - Divisão de Saúde Ocupacional' : undefined,
       statusGeral: !rec.homologadoRH ? 'homologado' : 'pronto_para_emissao',
       dataAtualizacao: new Date().toISOString()
     };
@@ -635,7 +635,7 @@ export const RHManagementDashboard: React.FC<RHManagementDashboardProps> = ({
                         processo: { ...prev.processo, orgaoSolicitante: e.target.value }
                       }))}
                       className="w-full text-xs rounded-xl border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Ex.: Diretoria de Gestão de Pessoas - DGEP"
+                      placeholder="Ex.: Diretoria de Gestão de Pessoas (DGEP) - Divisão de Saúde Ocupacional"
                     />
                   </div>
 

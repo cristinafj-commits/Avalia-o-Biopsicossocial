@@ -1,6 +1,6 @@
 {
   "name": "SISTEMA DE AVALIAÇÃO BIOPSICOSSOCIAL",
-  "description": "Sistema unificado para avaliação médica pericial e social com modelo fuzzy IF-BRA, vinculação de dados e geração automática de laudos consolidados.",
+  "description": "Sistema de Avaliação Biopsicossocial (IF-BRA) da Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP) e Divisão de Saúde Ocupacional.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

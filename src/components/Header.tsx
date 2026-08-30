@@ -19,7 +19,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { AvaliacaoCompleta, AuthUser } from '../types';
-import { DGEPLogo } from './DGEPLogo';
+import { CmcOfficialLogo } from './CmcOfficialLogo';
 
 export type AppTab = 'rh_dashboard' | 'medico_dashboard' | 'social_dashboard' | 'form1' | 'form2' | 'form3' | 'form4' | 'social' | 'consolidado' | 'script';
 export type UserRole = 'rh' | 'medico' | 'social';
@@ -103,10 +103,15 @@ export const Header: React.FC<HeaderProps> = ({
           
           {/* Logo & Title */}
           <div className="flex items-center space-x-3.5">
-            <DGEPLogo size={52} className="shadow-xs" />
+            <div className="bg-white p-1 rounded-lg border border-slate-200/80 shadow-2xs">
+              <CmcOfficialLogo height={34} color="black" />
+            </div>
             <div>
-              <h1 className="text-base sm:text-lg font-bold tracking-tight text-slate-900 uppercase">
-                SISTEMA DE AVALIAÇÃO BIOPSICOSSOCIAL
+              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                Diretoria de Gestão de Pessoas (DGEP) &bull; Divisão de Saúde Ocupacional
+              </div>
+              <h1 className="text-sm sm:text-base font-bold tracking-tight text-slate-900 uppercase">
+                Sistema de Avaliação Biopsicossocial (IF-BRA)
               </h1>
             </div>
           </div>

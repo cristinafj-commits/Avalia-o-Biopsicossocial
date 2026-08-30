@@ -18,6 +18,7 @@ import {
 import * as XLSX from 'xlsx';
 import { AvaliacaoCompleta } from '../types';
 import { calcularAvaliacaoBiopsicossocial } from '../utils/fuzzyCalculator';
+import { CmcOfficialLogo } from './CmcOfficialLogo';
 
 interface ManagementRequestsReportModalProps {
   isOpen: boolean;
@@ -181,7 +182,7 @@ export const ManagementRequestsReportModal: React.FC<ManagementRequestsReportMod
 
     const summaryData = [
       ['RELATÓRIO GERENCIAL DE SOLICITAÇÕES E RESULTADOS DE LAUDOS BIOPSICOSSOCIAIS (IF-BRA)'],
-      ['Órgão:', 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP)'],
+      ['Órgão:', 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP) - Divisão de Saúde Ocupacional'],
       ['Data de Geração do Relatório:', new Date().toLocaleString('pt-BR')],
       ['Total de Processos Listados:', totalFiltrados],
       ['Concluídos / Emitidos:', concluidosCount, 'Pendentes de Perícia:', pendentesCount, 'Homologados:', homologadosCount],
@@ -219,19 +220,19 @@ export const ManagementRequestsReportModal: React.FC<ManagementRequestsReportMod
         {/* MODAL HEADER */}
         <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-50/80 shrink-0">
           <div className="flex items-center space-x-3.5">
-            <div className="p-3 bg-indigo-600 text-white rounded-2xl shadow-xs">
-              <FileSpreadsheet className="w-6 h-6" />
+            <div className="bg-white p-1.5 rounded-xl border border-slate-200 shadow-2xs">
+              <CmcOfficialLogo height={36} color="black" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-[11px] font-bold text-indigo-700 bg-indigo-100/80 px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                  Gestão DGEP &bull; CMC
+                <span className="text-[10px] font-bold text-indigo-700 bg-indigo-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                  DGEP &bull; Divisão de Saúde Ocupacional
                 </span>
                 <span className="text-xs text-slate-500 font-medium">
                   {new Date().toLocaleDateString('pt-BR')}
                 </span>
               </div>
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
                 Relatório Gerencial de Solicitações e Resultados
               </h2>
             </div>
@@ -540,9 +541,14 @@ export const ManagementRequestsReportModal: React.FC<ManagementRequestsReportMod
       {/* ÁREA DE IMPRESSÃO OFICIAL DO RELATÓRIO GERENCIAL */}
       <div className="hidden print:block font-sans text-black p-8 max-w-5xl mx-auto space-y-6">
         <div className="text-center border-b-2 border-black pb-4">
-          <h1 className="text-lg font-bold">CÂMARA MUNICIPAL DE CURITIBA</h1>
-          <h2 className="text-base font-semibold">DIRETORIA DE GESTÃO DE PESSOAS - DGEP</h2>
-          <h3 className="text-sm uppercase tracking-wide mt-1">
+          <div className="flex justify-center mb-3">
+            <CmcOfficialLogo height={46} color="black" />
+          </div>
+          <h1 className="text-base font-bold uppercase tracking-wider">CÂMARA MUNICIPAL DE CURITIBA</h1>
+          <h2 className="text-xs font-bold uppercase text-slate-800 tracking-wide mt-0.5">
+            DIRETORIA DE GESTÃO DE PESSOAS (DGEP) &bull; DIVISÃO DE SAÚDE OCUPACIONAL
+          </h2>
+          <h3 className="text-sm uppercase tracking-wide mt-1.5 font-bold border-t border-slate-300 pt-1 inline-block px-4">
             Relatório de Gestão e Acompanhamento de Processos Biopsicossociais (IF-BRA)
           </h3>
           <p className="text-xs text-slate-600 mt-1">
@@ -585,12 +591,12 @@ export const ManagementRequestsReportModal: React.FC<ManagementRequestsReportMod
 
         <div className="pt-8 grid grid-cols-2 gap-8 text-center text-xs">
           <div className="border-t border-black pt-2">
-            <strong>Diretoria de Gestão de Pessoas (DGEP)</strong>
-            <p className="text-[10px]">Gestor Responsável</p>
+            <strong>Diretoria de Gestão de Pessoas (DGEP) &bull; Divisão de Saúde Ocupacional</strong>
+            <p className="text-[10px]">Gestor Responsável / Homologação</p>
           </div>
           <div className="border-t border-black pt-2">
-            <strong>Comissão Biopsicossocial</strong>
-            <p className="text-[10px]">Médico Perito & Assistente Social</p>
+            <strong>Comissão Biopsicossocial &bull; Junta Médica e Serviço Social</strong>
+            <p className="text-[10px]">Médico Perito &bull; Assistente Social</p>
           </div>
         </div>
       </div>

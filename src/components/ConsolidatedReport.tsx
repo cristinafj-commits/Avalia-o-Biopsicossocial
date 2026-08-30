@@ -32,6 +32,7 @@ import {
 } from 'recharts';
 import { AvaliacaoCompleta } from '../types';
 import { calcularAvaliacaoBiopsicossocial } from '../utils/fuzzyCalculator';
+import { CmcOfficialLogo } from './CmcOfficialLogo';
 
 interface ConsolidatedReportProps {
   evalData: AvaliacaoCompleta;
@@ -527,10 +528,19 @@ export const ConsolidatedReport: React.FC<ConsolidatedReportProps> = ({ evalData
       {/* AREA DE IMPRESSÃO OFICIAL (A4 PRINTABLE LAUDO) */}
       <div className="hidden print:block font-serif text-black p-8 max-w-4xl mx-auto space-y-6">
         <div className="text-center border-b-2 border-black pb-4">
-          <h1 className="text-base font-bold uppercase tracking-wider">Câmara Municipal de Curitiba</h1>
-          <h2 className="text-sm font-semibold uppercase text-slate-800">Diretoria de Gestão de Pessoas &bull; Divisão de Saúde Ocupacional e Perícias</h2>
-          <h3 className="text-base font-bold uppercase mt-1">SISTEMA DE AVALIAÇÃO BIOPSICOSSOCIAL</h3>
-          <p className="text-xs italic mt-0.5">Aplicação Unificada Dual do Índice de Funcionalidade Brasileiro (IF-BRA Médico + Social)</p>
+          <div className="flex justify-center mb-3">
+            <CmcOfficialLogo height={48} color="black" />
+          </div>
+          <h1 className="text-base font-bold uppercase tracking-wider">CÂMARA MUNICIPAL DE CURITIBA</h1>
+          <h2 className="text-xs font-bold uppercase text-slate-800 tracking-wide mt-0.5">
+            Diretoria de Gestão de Pessoas (DGEP) &bull; Divisão de Saúde Ocupacional
+          </h2>
+          <h3 className="text-sm font-bold uppercase mt-1.5 border-t border-slate-300 pt-1.5 inline-block px-4">
+            LAUDO PERICIAL BIOPSICOSSOCIAL UNIFICADO &bull; IF-BRA
+          </h3>
+          <p className="text-[11px] italic mt-0.5 text-slate-700">
+            Índice de Funcionalidade Brasileiro (Avaliação Dual: Médica + Social) &bull; Lei Brasileira de Inclusão (Lei nº 13.146/2015)
+          </p>
         </div>
 
         {evalData.processoAdministrativo && (
@@ -618,10 +628,10 @@ export const ConsolidatedReport: React.FC<ConsolidatedReportProps> = ({ evalData
 
         {evalData.homologadoRH && (
           <div className="border-t-2 border-dashed border-black pt-4 text-center text-xs space-y-1">
-            <p className="font-bold uppercase">Homologação da Diretoria de Gestão de Pessoas (DGEP)</p>
-            <p>Laudo Biopsicossocial homologado para os devidos fins de direito funcionais.</p>
+            <p className="font-bold uppercase">Homologação da Diretoria de Gestão de Pessoas (DGEP) &bull; Divisão de Saúde Ocupacional</p>
+            <p>Laudo Biopsicossocial homologado para os devidos fins de direitos e enquadramentos funcionais.</p>
             <p className="text-[10px] italic text-slate-700">
-              Homologado por: {evalData.responsavelHomologacao || 'Diretoria de Gestão de Pessoas'} em {evalData.dataHomologacao ? new Date(evalData.dataHomologacao).toLocaleString('pt-BR') : 'Data de homologação'}
+              Homologado por: {evalData.responsavelHomologacao || 'Diretoria de Gestão de Pessoas (DGEP) / Divisão de Saúde Ocupacional'} em {evalData.dataHomologacao ? new Date(evalData.dataHomologacao).toLocaleString('pt-BR') : 'Data de homologação'}
             </p>
           </div>
         )}

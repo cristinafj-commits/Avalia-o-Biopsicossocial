@@ -12,12 +12,10 @@ import {
   Eye, 
   EyeOff, 
   KeyRound,
-  FileCheck,
-  Sparkles,
   Info
 } from 'lucide-react';
 import { AuthUser, UserProfile } from '../types';
-import { DGEPLogo } from './DGEPLogo';
+import { CmcOfficialLogo } from './CmcOfficialLogo';
 
 interface LoginPageProps {
   onLogin: (user: AuthUser) => void;
@@ -102,18 +100,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     onLogin(authUser);
   };
 
-  // Quick-fill demo institutional accounts
-  const handleQuickFill = (demoEmail: string, demoNome: string, demoPerfil: UserProfile, demoDoc: string) => {
-    setEmail(demoEmail);
-    setNome(demoNome);
-    setPerfil(demoPerfil);
-    setDocumento(demoDoc);
-    setPassword('cmc@2026');
-    setErrorMsg('');
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-[#042749] to-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 text-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-[#042749] to-slate-950 flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 text-slate-100">
       
       {/* Decorative subtle ambient lights */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -122,37 +110,35 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
-        {/* LOGO E CABEÇALHO */}
-        <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl mb-4">
-          <DGEPLogo size={64} className="shadow-lg" />
+        <div className="inline-flex items-center justify-center p-2.5 bg-white rounded-2xl shadow-xl border border-white/40 mb-3.5">
+          <CmcOfficialLogo height={42} color="black" />
         </div>
-
-        <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
+        <h2 className="text-sm sm:text-base font-bold tracking-tight text-white uppercase">
           CÂMARA MUNICIPAL DE CURITIBA
         </h2>
-        <p className="text-xs sm:text-sm font-semibold text-sky-200 mt-1 uppercase tracking-wider">
-          Diretoria de Gestão de Pessoas (DGEP)
+        <p className="text-xs font-semibold text-sky-200 mt-0.5 uppercase tracking-wider">
+          Diretoria de Gestão de Pessoas (DGEP) &bull; Divisão de Saúde Ocupacional
         </p>
-        <p className="text-xs text-slate-300 mt-1">
+        <p className="text-[11px] text-slate-300 mt-0.5">
           Sistema de Avaliação Biopsicossocial &bull; IF-BRA
         </p>
       </div>
 
       {/* LOGIN CARD */}
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl relative z-10">
-        <div className="bg-white/95 backdrop-blur-md text-slate-900 py-8 px-6 sm:px-10 shadow-2xl rounded-3xl border border-white/40">
+      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-lg relative z-10">
+        <div className="bg-white/95 backdrop-blur-md text-slate-900 py-7 px-6 sm:px-8 shadow-2xl rounded-3xl border border-white/40">
           
-          <div className="border-b border-slate-100 pb-4 mb-6 flex items-center justify-between">
+          <div className="border-b border-slate-100 pb-3 mb-5 flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-slate-900">
-                Acesso Restrito aos Profissionais
+              <h3 className="text-sm font-bold text-slate-900">
+                Acesso Restrito
               </h3>
               <p className="text-xs text-slate-500">
-                Autenticação com e-mail institucional <strong>@cmc.pr.gov.br</strong>
+                Autenticação institucional <strong>@cmc.pr.gov.br</strong>
               </p>
             </div>
             <div className="p-2 bg-indigo-50 text-indigo-700 rounded-xl border border-indigo-100">
-              <ShieldCheck className="w-5 h-5" />
+              <ShieldCheck className="w-4 h-4" />
             </div>
           </div>
 
@@ -160,7 +146,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             
             {/* SELEÇÃO DE PERFIL FUNCIONAL */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-2">
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
                 Selecione seu Perfil de Acesso:
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -170,13 +156,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     setPerfil('rh');
                     if (documento.startsWith('CRM') || documento.startsWith('CRESS')) setDocumento('');
                   }}
-                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition cursor-pointer ${
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition cursor-pointer ${
                     perfil === 'rh'
                       ? 'bg-purple-50 border-purple-500 text-purple-950 font-bold shadow-xs ring-2 ring-purple-400/40'
                       : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:bg-slate-100'
                   }`}
                 >
-                  <Building2 className={`w-5 h-5 mb-1.5 ${perfil === 'rh' ? 'text-purple-600' : 'text-slate-400'}`} />
+                  <Building2 className={`w-4 h-4 mb-1 ${perfil === 'rh' ? 'text-purple-600' : 'text-slate-400'}`} />
                   <span className="text-[11px] leading-tight">Gestão de Pessoas</span>
                   <span className="text-[9px] text-slate-400 mt-0.5">DGEP / RH</span>
                 </button>
@@ -187,13 +173,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     setPerfil('medico');
                     if (!documento) setDocumento('CRM/PR ');
                   }}
-                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition cursor-pointer ${
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition cursor-pointer ${
                     perfil === 'medico'
                       ? 'bg-emerald-50 border-emerald-500 text-emerald-950 font-bold shadow-xs ring-2 ring-emerald-400/40'
                       : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:bg-slate-100'
                   }`}
                 >
-                  <Stethoscope className={`w-5 h-5 mb-1.5 ${perfil === 'medico' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <Stethoscope className={`w-4 h-4 mb-1 ${perfil === 'medico' ? 'text-emerald-600' : 'text-slate-400'}`} />
                   <span className="text-[11px] leading-tight">Médico Perito</span>
                   <span className="text-[9px] text-slate-400 mt-0.5">Junta Médica</span>
                 </button>
@@ -204,13 +190,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     setPerfil('social');
                     if (!documento) setDocumento('CRESS/PR ');
                   }}
-                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition cursor-pointer ${
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition cursor-pointer ${
                     perfil === 'social'
                       ? 'bg-sky-50 border-sky-500 text-sky-950 font-bold shadow-xs ring-2 ring-sky-400/40'
                       : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:bg-slate-100'
                   }`}
                 >
-                  <Users className={`w-5 h-5 mb-1.5 ${perfil === 'social' ? 'text-sky-600' : 'text-slate-400'}`} />
+                  <Users className={`w-4 h-4 mb-1 ${perfil === 'social' ? 'text-sky-600' : 'text-slate-400'}`} />
                   <span className="text-[11px] leading-tight">Assistente Social</span>
                   <span className="text-[9px] text-slate-400 mt-0.5">Serviço Social</span>
                 </button>
@@ -224,14 +210,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   E-mail Institucional <span className="text-red-500">*</span>
                 </label>
                 {domainStatus === 'valid' && (
-                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center space-x-1 border border-emerald-200">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Domínio @cmc.pr.gov.br Verificado</span>
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center space-x-1 border border-emerald-200">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                    <span>@cmc.pr.gov.br Verificado</span>
                   </span>
                 )}
                 {domainStatus === 'invalid' && (
-                  <span className="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md flex items-center space-x-1 border border-red-200">
-                    <AlertCircle className="w-3.5 h-3.5 text-red-500" />
+                  <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md flex items-center space-x-1 border border-red-200">
+                    <AlertCircle className="w-3 h-3 text-red-500" />
                     <span>Requer @cmc.pr.gov.br</span>
                   </span>
                 )}
@@ -246,7 +232,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="nome.sobrenome@cmc.pr.gov.br"
-                  className={`block w-full pl-10 pr-3 py-2.5 text-xs rounded-xl border transition ${
+                  className={`block w-full pl-10 pr-3 py-2 text-xs rounded-xl border transition ${
                     domainStatus === 'valid' 
                       ? 'border-emerald-500 bg-emerald-50/20 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-900 font-medium'
                       : domainStatus === 'invalid'
@@ -261,17 +247,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               </p>
             </div>
 
-            {/* DOCUMENTO PROFISSIONAL (CRM / CRESS / MATRÍCULA) & NOME */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* DOCUMENTO PROFISSIONAL & NOME */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Nome Completo do Profissional
+                  Nome Completo
                 </label>
                 <input
                   type="text"
                   value={nome}
                   onChange={e => setNome(e.target.value)}
-                  placeholder="Ex: Dra. Cristina Jesus"
+                  placeholder="Seu nome completo"
                   className="w-full text-xs rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -304,7 +290,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="block w-full pl-10 pr-10 py-2.5 text-xs rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
+                  className="block w-full pl-10 pr-10 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
                   required
                 />
                 <button
@@ -319,14 +305,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
             {/* MENSAGEM DE ERRO */}
             {errorMsg && (
-              <div className="text-xs text-red-700 bg-red-50 p-3 rounded-xl border border-red-200 flex items-start space-x-2 animate-in fade-in duration-200">
+              <div className="text-xs text-red-700 bg-red-50 p-2.5 rounded-xl border border-red-200 flex items-start space-x-2 animate-in fade-in duration-200">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <span className="leading-tight font-medium">{errorMsg}</span>
               </div>
             )}
 
             {/* LEMBRAR USUÁRIO */}
-            <div className="flex items-center justify-between text-xs text-slate-600 pt-1">
+            <div className="flex items-center justify-between text-xs text-slate-600 pt-0.5">
               <label className="flex items-center space-x-2 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -334,9 +320,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   onChange={e => setRememberMe(e.target.checked)}
                   className="rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 h-3.5 w-3.5"
                 />
-                <span>Lembrar credencial nesta estação de trabalho</span>
+                <span className="text-[11px]">Lembrar credencial</span>
               </label>
-              <span className="text-[11px] text-slate-400 font-medium">
+              <span className="text-[10px] text-slate-400 font-medium">
                 Conexão Segura CMC
               </span>
             </div>
@@ -345,80 +331,28 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full text-xs sm:text-sm font-bold py-3 px-4 rounded-xl text-white bg-[#042749] hover:bg-[#063a6e] active:scale-[0.99] transition shadow-md flex items-center justify-center space-x-2 cursor-pointer"
+                className="w-full text-xs sm:text-sm font-bold py-2.5 px-4 rounded-xl text-white bg-[#042749] hover:bg-[#063a6e] active:scale-[0.99] transition shadow-md flex items-center justify-center space-x-2 cursor-pointer"
               >
                 <Lock className="w-4 h-4 text-sky-300" />
-                <span>Entrar no Sistema Biopsicossocial</span>
+                <span>Entrar no Sistema</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </form>
 
-          {/* ACESSO RÁPIDO PARA DEMO / TESTES DE HOMOLOGAÇÃO */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 mb-2.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>Acessos Rápidos Homologados (@cmc.pr.gov.br):</span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickFill(
-                  'cristina.jesus@cmc.pr.gov.br', 
-                  'Dra. Cristina Jesus', 
-                  'rh', 
-                  'MAT-DGEP-01'
-                )}
-                className="p-2 rounded-xl border border-purple-200 bg-purple-50/70 hover:bg-purple-100 text-left transition cursor-pointer text-[11px]"
-              >
-                <div className="font-bold text-purple-900 truncate">Cristina Jesus</div>
-                <div className="text-purple-700 text-[10px]">Gestão DGEP</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickFill(
-                  'dr.silva.perito@cmc.pr.gov.br', 
-                  'Dr. Roberto Silva', 
-                  'medico', 
-                  'CRM/PR 28.450'
-                )}
-                className="p-2 rounded-xl border border-emerald-200 bg-emerald-50/70 hover:bg-emerald-100 text-left transition cursor-pointer text-[11px]"
-              >
-                <div className="font-bold text-emerald-900 truncate">Dr. Roberto Silva</div>
-                <div className="text-emerald-700 text-[10px]">Médico Perito</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickFill(
-                  'as.marta.social@cmc.pr.gov.br', 
-                  'Marta Oliveira', 
-                  'social', 
-                  'CRESS/PR 7.820'
-                )}
-                className="p-2 rounded-xl border border-sky-200 bg-sky-50/70 hover:bg-sky-100 text-left transition cursor-pointer text-[11px]"
-              >
-                <div className="font-bold text-sky-900 truncate">Marta Oliveira</div>
-                <div className="text-sky-700 text-[10px]">Serviço Social</div>
-              </button>
-            </div>
-          </div>
-
           {/* AVISO DE CONFORMIDADE LEGAL & PRIVACIDADE */}
-          <div className="mt-5 text-[10px] text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-200/80 flex items-start space-x-2">
+          <div className="mt-4 text-[10px] text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 flex items-start space-x-2">
             <Info className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              O acesso aos dados funcionais e laudos biopsicossociais é protegido pela Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018) e pelas normas periciais do CFM e CFESS. Todo acesso e assinatura eletrônica são auditados.
+              O acesso aos dados e laudos biopsicossociais é restrito e auditado conforme a LGPD (Lei nº 13.709/2018) e normas periciais do CFM e CFESS.
             </p>
           </div>
 
         </div>
 
         {/* FOOTER CRÉDITOS */}
-        <p className="text-center text-[11px] text-slate-400 mt-6">
-          &copy; {new Date().getFullYear()} Câmara Municipal de Curitiba &bull; Diretoria de Gestão de Pessoas
+        <p className="text-center text-[10px] text-slate-400 mt-4">
+          &copy; {new Date().getFullYear()} Câmara Municipal de Curitiba &bull; Diretoria de Gestão de Pessoas &bull; Divisão de Saúde Ocupacional
         </p>
       </div>
 
