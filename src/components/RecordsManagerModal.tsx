@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { 
-  X, 
-  Search, 
   FolderOpen, 
-  PlusCircle, 
+  X, 
   Trash2, 
-  Copy, 
   Upload, 
-  FileCheck2, 
-  Download,
-  Calendar,
-  User
+  Copy, 
+  PlusCircle, 
+  Search,
+  RotateCcw,
+  AlertTriangle
 } from 'lucide-react';
 import { AvaliacaoCompleta } from '../types';
 
@@ -23,6 +21,7 @@ interface RecordsManagerModalProps {
   onNewRecord: () => void;
   onDeleteRecord: (id: string) => void;
   onImportJson: (jsonString: string) => void;
+  onClearAllRecords?: () => void;
 }
 
 export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
@@ -34,6 +33,7 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
   onNewRecord,
   onDeleteRecord,
   onImportJson,
+  onClearAllRecords,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [importText, setImportText] = useState('');
@@ -43,45 +43,51 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
 
   const filtered = savedRecords.filter(r => 
     r.servidor.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    r.servidor.cpf.includes(searchTerm) ||
-    r.servidor.matricula.includes(searchTerm)
+    r.servidor.cpf.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    r.servidor.matricula.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (r.processoAdministrativo?.numeroProcesso && r.processoAdministrativo.numeroProcesso.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const handleImportSubmit = () => {
-    if (!importText.trim()) return;
+  const handleProcessImport = () => {
     try {
-      onImportJson(importText);
+      if (!importText.trim()) return;
+      onImportJson(importText.trim());
       setImportText('');
       setShowImportArea(false);
-      onClose();
     } catch (e: any) {
       alert('Erro ao importar JSON: ' + e.message);
     }
   };
 
+  const handleClearAll = () => {
+    if (confirm('ATENÇÃO: Deseja realmente LIMPAR e APAGAR todos os dados e cadastros do sistema para iniciar testes do zero? Esta ação é irreversível.')) {
+      if (onClearAllRecords) {
+        onClearAllRecords();
+        onClose();
+      }
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] shadow-2xl flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
         
         {/* Modal Header */}
-        <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-indigo-600 rounded-xl text-white">
-              <FolderOpen className="w-5 h-5" />
-            </div>
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+          <div className="flex items-center space-x-2">
+            <FolderOpen className="w-5 h-5 text-indigo-600" />
             <div>
-              <h3 className="text-base font-bold text-slate-900">
-                Gerenciador de Avaliações Salvas
-              </h3>
-              <p className="text-xs text-slate-500">
-                {savedRecords.length} avaliação(ões) no banco de dados local
+              <h2 className="text-sm font-bold text-slate-900">
+                Processos e Avaliações Salvas ({savedRecords.length})
+              </h2>
+              <p className="text-[11px] text-slate-500">
+                Gerencie, alterne ou inicie cadastros do sistema biopsicossocial
               </p>
             </div>
           </div>
-
-          <button
+          <button 
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 transition"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -89,7 +95,7 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
 
         {/* Modal Toolbar */}
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 bg-white">
-          <div className="relative w-full sm:w-72">
+          <div className="relative w-full sm:w-64">
             <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
             <input
               type="text"
@@ -100,7 +106,7 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
             />
           </div>
 
-          <div className="flex items-center space-x-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
             <button
               onClick={() => setShowImportArea(!showImportArea)}
               className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-2 rounded-xl transition flex items-center space-x-1.5"
@@ -143,8 +149,8 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
                 Cancelar
               </button>
               <button
-                onClick={handleImportSubmit}
-                className="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-xs"
+                onClick={handleProcessImport}
+                className="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3 py-1.5 rounded-lg transition"
               >
                 Confirmar Importação
               </button>
@@ -156,7 +162,7 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
         <div className="p-4 overflow-y-auto flex-1 divide-y divide-slate-100">
           {filtered.length === 0 ? (
             <div className="text-center py-12 text-slate-400 text-xs">
-              Nenhuma avaliação encontrada com o termo "{searchTerm}".
+              Nenhuma avaliação cadastrada ou encontrada com o termo "{searchTerm}".
             </div>
           ) : (
             filtered.map(record => {
@@ -183,7 +189,7 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
                   >
                     <div className="flex items-center space-x-2">
                       <span className="text-xs font-bold text-slate-900 truncate">
-                        {record.servidor.nome || 'Servidor Sem Nome'}
+                        {record.servidor?.nome || record.processoAdministrativo?.numeroProcesso || 'Novo Registro em Branco'}
                       </span>
                       {isSelected && (
                         <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.2 rounded-full font-semibold">
@@ -193,8 +199,9 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 mt-1">
-                      <span>CPF: {record.servidor.cpf || 'Não informado'}</span>
-                      <span>Matrícula: {record.servidor.matricula || '—'}</span>
+                      <span>Processo: {record.processoAdministrativo?.numeroProcesso || '—'}</span>
+                      <span>CPF: {record.servidor?.cpf || 'Não informado'}</span>
+                      <span>Matrícula: {record.servidor?.matricula || '—'}</span>
                       <span>Atualizado em: {dataFormatada}</span>
                     </div>
                   </div>
@@ -214,7 +221,7 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
 
                     <button
                       onClick={() => {
-                        if (confirm(`Deseja realmente excluir a avaliação de "${record.servidor.nome || 'Servidor'}"?`)) {
+                        if (confirm(`Deseja realmente excluir a avaliação de "${record.servidor?.nome || 'Servidor'}"?`)) {
                           onDeleteRecord(record.id);
                         }
                       }}
@@ -231,10 +238,21 @@ export const RecordsManagerModal: React.FC<RecordsManagerModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-3.5 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <div className="p-3.5 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+          {onClearAllRecords && (
+            <button
+              onClick={handleClearAll}
+              className="text-xs text-red-600 hover:bg-red-50 border border-red-200 font-semibold px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5 cursor-pointer"
+              title="Apagar todos os dados e cadastros para iniciar testes limpos"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Limpar Sistema (Dados e Cadastros)</span>
+            </button>
+          )}
+
           <button
             onClick={onClose}
-            className="text-xs bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-4 py-2 rounded-xl transition"
+            className="text-xs bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-4 py-2 rounded-xl transition ml-auto"
           >
             Fechar
           </button>

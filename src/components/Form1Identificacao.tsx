@@ -58,8 +58,8 @@ export const Form1Identificacao: React.FC<Form1IdentificacaoProps> = ({
   };
 
   const filteredCids = CIDS_FREQUENTES.filter(c => 
-    c.code.toLowerCase().includes(cidSearch.toLowerCase()) ||
-    c.description.toLowerCase().includes(cidSearch.toLowerCase())
+    c.codigo.toLowerCase().includes(cidSearch.toLowerCase()) ||
+    c.descricao.toLowerCase().includes(cidSearch.toLowerCase())
   );
 
   return (
@@ -377,12 +377,12 @@ export const Form1Identificacao: React.FC<Form1IdentificacaoProps> = ({
           <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1">
             {filteredCids.map(item => (
               <button
-                key={item.code}
+                key={item.codigo}
                 type="button"
-                onClick={() => handleMedicoChange('cidPrincipal', `${item.code} - ${item.description}`)}
+                onClick={() => handleMedicoChange('cidPrincipal', `${item.codigo} - ${item.descricao}`)}
                 className="text-[11px] bg-white hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200 transition text-left shadow-2xs"
               >
-                <strong className="font-mono text-indigo-600">{item.code}</strong>: {item.description}
+                <strong className="font-mono text-indigo-600">{item.codigo}</strong>: {item.descricao}
               </button>
             ))}
           </div>

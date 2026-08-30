@@ -1,5 +1,33 @@
 import { AvaliacaoCompleta } from '../types';
 
+export interface CidItem {
+  codigo: string;
+  descricao: string;
+  categoria: string;
+}
+
+export const CIDS_FREQUENTES: CidItem[] = [
+  { codigo: 'G80.0', descricao: 'Paralisia cerebral espástica quadriplégica/diplégica', categoria: 'Neurológica / Motora' },
+  { codigo: 'G80.9', descricao: 'Paralisia cerebral não especificada', categoria: 'Neurológica / Motora' },
+  { codigo: 'M21.0', descricao: 'Deformidade em valgo adquirida', categoria: 'Ortopédica / Motora' },
+  { codigo: 'M54.5', descricao: 'Dor lombar baixa (Lombalgia crônica incapacitante)', categoria: 'Ortopédica / Coluna' },
+  { codigo: 'M51.1', descricao: 'Transtornos de discos lombares com radiculopatia', categoria: 'Ortopédica / Coluna' },
+  { codigo: 'H54.0', descricao: 'Cegueira, ambos os olhos (Visão subnormal grave/cegueira)', categoria: 'Sensorial / Visual' },
+  { codigo: 'H54.4', descricao: 'Cegueira em um olho (Visão monocular - Lei 14.126/2021)', categoria: 'Sensorial / Visual' },
+  { codigo: 'H90.3', descricao: 'Perda de audição bilateral neuro-sensorial', categoria: 'Sensorial / Auditiva' },
+  { codigo: 'H90.5', descricao: 'Perda auditiva neuro-sensorial não especificada', categoria: 'Sensorial / Auditiva' },
+  { codigo: 'F70', descricao: 'Retardo mental leve (Deficiência Intelectual)', categoria: 'Mental / Intelectual' },
+  { codigo: 'F71', descricao: 'Retardo mental moderado', categoria: 'Mental / Intelectual' },
+  { codigo: 'F84.0', descricao: 'Autismo infantil (Transtorno do Espectro Autista - TEA)', categoria: 'Neurodesenvolvimento' },
+  { codigo: 'F84.1', descricao: 'Autismo atípico', categoria: 'Neurodesenvolvimento' },
+  { codigo: 'F84.5', descricao: 'Síndrome de Asperger', categoria: 'Neurodesenvolvimento' },
+  { codigo: 'G20', descricao: 'Doença de Parkinson', categoria: 'Neurológica degenerativa' },
+  { codigo: 'G35', descricao: 'Esclerose múltipla', categoria: 'Neurológica desmielinizante' },
+  { codigo: 'I69.4', descricao: 'Sequelas de acidente vascular cerebral (AVC/AVE)', categoria: 'Neurológica / Vascular' },
+  { codigo: 'T92.6', descricao: 'Sequelas de amputação de membro superior/mão', categoria: 'Traumatológica' },
+  { codigo: 'T93.6', descricao: 'Sequelas de amputação de membro inferior/pé', categoria: 'Traumatológica' },
+];
+
 export interface AtividadeDef {
   id: string;
   codigoDomain: number;
@@ -58,47 +86,27 @@ export const ATIVIDADES_IFBRA_DEF: AtividadeDef[] = [
   { id: '6.5', codigoDomain: 6, domainName: 'Educação, Trabalho e Vida Econômica', nome: '6.5 Administração de recursos econômicos pessoais', descricao: 'Gerir orçamento, contas bancárias, pagamentos e renda individual.' },
 
   // Domínio 7: Socialização e Vida Comunitária
-  { id: '7.1', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.1 Regular o comportamento nas interações', descricao: 'Controlar impulsos, reações emotivas e comportamentos agressivos.' },
-  { id: '7.2', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.2 Interagir de acordo com as regras sociais', descricao: 'Respeitar costumes, normas de convivência, limites e hierarquias.' },
-  { id: '7.3', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.3 Relacionamentos com estranhos', descricao: 'Manter interações adequadas com pessoas desconhecidas no cotidiano.' },
-  { id: '7.4', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.4 Relacionamentos familiares e com pessoas familiares', descricao: 'Conviver harmoniosamente com parentes, vizinhos e amigos próximos.' },
-  { id: '7.5', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.5 Relacionamentos íntimos', descricao: 'Desenvolver laços afetivos profundos, namoro, casamento e parceria.' },
-  { id: '7.6', codigoDomain: 7, domainName: 'Socialização', nome: '7.6 Socialização', descricao: 'Participar de eventos sociais, reuniões, festas e momentos de lazer.' },
-  { id: '7.7', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.7 Fazer as próprias escolhas', descricao: 'Exercer autonomia nas decisões do dia a dia e planos futuros.' },
-  { id: '7.8', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.8 Vida Política e Cidadania', descricao: 'Votar, participar de associações, sindicatos e exercer direitos civis.' },
+  { id: '7.1', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.1 Comunidade', descricao: 'Participar de eventos sociais, recreativos ou esportivos em clubes/associações.' },
+  { id: '7.2', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.2 Recreação e lazer', descricao: 'Praticar hobbies, jogos, artesanato ou comparecer a cinemas/parques.' },
+  { id: '7.3', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.3 Religião e espiritualidade', descricao: 'Frequentar templos, cerimônias ou grupos religiosos comunitários.' },
+  { id: '7.4', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.4 Direitos humanos', descricao: 'Exercer cidadania, usufruir de prerrogativas legais e garantias fundamentais.' },
+  { id: '7.5', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.5 Vida política e cidadania', descricao: 'Votar, filiar-se a representações de classe e participar de conselhos.' },
+  { id: '7.6', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.6 Relacionamentos com pessoas estranhas', descricao: 'Interagir com cordialidade com desconhecidos em ambientes públicos.' },
+  { id: '7.7', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.7 Relacionamentos com pessoas conhecidas', descricao: 'Manter convivência com vizinhos, colegas de trabalho e amigos.' },
+  { id: '7.8', codigoDomain: 7, domainName: 'Socialização e Vida Comunitária', nome: '7.8 Família', descricao: 'Conviver harmoniosamente no ambiente doméstico com familiares.' },
 ];
 
-export const CIDS_FREQUENTES = [
-  { code: 'F70', description: 'Retardo mental leve' },
-  { code: 'F71', description: 'Retardo mental moderado' },
-  { code: 'F72', description: 'Retardo mental grave' },
-  { code: 'F84.0', description: 'Autismo infantil (Transtorno do Espectro Autista)' },
-  { code: 'G80', description: 'Paralisia cerebral' },
-  { code: 'G81', description: 'Hemiplegia' },
-  { code: 'G82', description: 'Paraplegia e tetraplegia' },
-  { code: 'H54.0', description: 'Cegueira de ambos os olhos' },
-  { code: 'H54.1', description: 'Cegueira em um olho e visão reduzida no outro' },
-  { code: 'H90.3', description: 'Perda de audição neurossensorial bilateral' },
-  { code: 'M15', description: 'Poliartrose / Artrose grave' },
-  { code: 'M54.5', description: 'Lumbago com ciática / Dor lombar crônica incapacitante' },
-  { code: 'I69', description: 'Sequelas de doenças cerebrovasculares (AVC)' },
-  { code: 'Q90', description: 'Síndrome de Down' },
-  { code: 'Z73.6', description: 'Incapacidade que resulta em redução das atividades' },
-];
-
-export interface FuncaoCorporalCIFItem {
-  key: keyof import('../types').FuncoesCorporaisAcometidas;
-  nome: string;
-  descricao: string;
-}
-
-export interface CategoriaCIF {
+export interface FuncaoCIFDef {
   numero: number;
   titulo: string;
-  itens: FuncaoCorporalCIFItem[];
+  itens: {
+    key: keyof import('../types').FuncoesCorporaisAcometidas;
+    nome: string;
+    descricao: string;
+  }[];
 }
 
-export const FUNCOES_CIF_DEF: CategoriaCIF[] = [
+export const FUNCOES_CIF_DEF: FuncaoCIFDef[] = [
   {
     numero: 1,
     titulo: '1. Funções Mentais',
@@ -106,12 +114,12 @@ export const FUNCOES_CIF_DEF: CategoriaCIF[] = [
       {
         key: 'mentaisGlobais',
         nome: 'Funções Mentais Globais',
-        descricao: 'consciência, orientação (tempo, lugar, pessoa), intelectuais (inclui desenvolvimento cognitivo e intelectual), psicossociais globais (inclui autismo), temperamento e personalidade, energia e impulsos, sono'
+        descricao: 'consciência, orientação, intelectuais, psicossociais globais, temperamento e personalidade, energia e impulsos, sono'
       },
       {
         key: 'mentaisEspecificas',
         nome: 'Funções Mentais Específicas',
-        descricao: 'atenção, memória, psicomotoras, emocionais, percepção, pensamento, funções executivas, linguagem, cálculo, sequenciamento de movimentos complexos (inclui apraxia), experiência pessoal e do tempo'
+        descricao: 'atenção, memória, psicomotoras, emocionais, perceptivas, do pensamento, cognitivas superiores, da linguagem, de cálculo, dos movimentos complexos, de autorregulação'
       }
     ]
   },
@@ -121,28 +129,28 @@ export const FUNCOES_CIF_DEF: CategoriaCIF[] = [
     itens: [
       {
         key: 'visao',
-        nome: 'Visão e Funções Relacionadas',
-        descricao: 'acuidade visual, campo visual, funções dos músculos internos e externos do olho, da pálpebra, glândulas lacrimais'
+        nome: 'Funções da Visão',
+        descricao: 'visuais, acuidade visual, campo visual, qualidade da visão, funções das estruturas adjacentes ao olho'
       },
       {
         key: 'auditivas',
         nome: 'Funções Auditivas',
-        descricao: 'detecção, descriminação, localização do som e da fala'
+        descricao: 'auditivas, localização do som, discriminação lateral, discriminação da fala'
       },
       {
         key: 'vestibulares',
         nome: 'Funções Vestibulares',
-        descricao: 'relacionadas à posição, equilíbrio e movimento'
-      },
-      {
-        key: 'dor',
-        nome: 'Dor',
-        descricao: 'sensação desagradável que indica lesão potencial ou real em alguma parte do corpo. Generalizada ou localizada.'
+        descricao: 'de posição, de equilíbrio, de movimento'
       },
       {
         key: 'sensoriaisAdicionais',
-        nome: 'Funções Sensoriais adicionais',
-        descricao: 'gustativa, olfativa, proprioceptiva, tátil, à dor, temperatura'
+        nome: 'Funções Sensoriais Adicionais',
+        descricao: 'gustativas, olfativas, proprioceptivas, táteis, térmicas e outras sensações cutâneas'
+      },
+      {
+        key: 'dor',
+        nome: 'Sensação de Dor',
+        descricao: 'dor em uma parte do corpo, dor em múltiplas partes do corpo, dor generalizada, dor irradiada, dor em um dermátomo, dor provocada por estímulos não nocivos'
       }
     ]
   },
@@ -152,8 +160,8 @@ export const FUNCOES_CIF_DEF: CategoriaCIF[] = [
     itens: [
       {
         key: 'vozEFala',
-        nome: 'Voz, articulação, fluência, ritmo da fala',
-        descricao: 'funções da produção da voz, articulação fonética, fluência, modulação e ritmo da fala'
+        nome: 'Funções da Voz e da Fala',
+        descricao: 'produção da voz, qualidade da voz, fonação, articulação, fluência e ritmo da fala'
       }
     ]
   },
@@ -164,7 +172,7 @@ export const FUNCOES_CIF_DEF: CategoriaCIF[] = [
       {
         key: 'cardiovascular',
         nome: 'Funções do Sistema Cardiovascular',
-        descricao: 'funções do coração, vasos sanguíneos, pressão arterial'
+        descricao: 'do coração, dos vasos sanguíneos, pressão arterial'
       },
       {
         key: 'hematologico',
@@ -249,170 +257,122 @@ export const FUNCOES_CIF_DEF: CategoriaCIF[] = [
   }
 ];
 
-export const RASCUNHO_INICIAL: AvaliacaoCompleta = {
-  id: 'EVAL-2026-001',
-  dataCriacao: new Date().toISOString(),
-  dataAtualizacao: new Date().toISOString(),
-  status: 'Em Andamento',
-  statusGeral: 'pronto_para_emissao',
-  
-  processoAdministrativo: {
-    numeroProcesso: 'PA-2026/00148',
-    dataSolicitacao: '2026-08-15',
-    motivoSolicitacao: 'Avaliação Biopsicossocial para Enquadramento Funcional (IF-BRA)',
-    orgaoSolicitante: 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP)',
-    gestorResponsavel: 'Mariana Duarte Souza',
-    matriculaGestor: 'GP-4402',
-    observacoesRH: 'Solicitação instruída a pedido do servidor com laudos médicos anexos. Encaminhado para perícia médica e serviço social.',
-    anexoNome: 'Processo_Administrativo_PA_2026_00148.pdf',
-    anexoTamanho: '2.4 MB',
-    anexoTipo: 'application/pdf'
-  },
-  
-  servidor: {
-    nome: 'João da Silva Santos',
-    rg: '12.345.678-9 PR',
-    cpf: '123.456.789-00',
-    idade: '45',
-    sexo: 'Masculino',
-    matricula: '89421-0',
-    cargo: 'Técnico Administrativo',
-    setorLotacao: 'Coordenação de Protocolo e Arquivo Geral',
-    dataAdmissao: '2012-03-15',
-    telefone: '(41) 98877-6655',
-    email: 'joao.santos@curitiba.pr.gov.br',
-  },
-  
-  medico: {
-    nome: 'Dra. Maria Clara Oliveira',
-    crm: 'CRM/PR 24.510',
-    ufCrm: 'PR',
-    dataAvaliacao: new Date().toISOString().split('T')[0],
-    localAvaliacao: 'Consultório / Junta Médica',
-    informante: 'Avaliado(a) e pessoa de convívio',
-    cidPrincipal: 'G80.0 - Paralisia Cerebral Espástica',
-    cidSequela: 'M21.0 - Deformidade Adquirida de Membro',
-    dataInicioImpedimento: '2015-08-10',
-    historiaClinica: 'Servidor público municipal portador de sequela motora em membros inferiores decorrente de paralisia cerebral leve associada a discopatia crônica com limitação de marcha e dor crônica aos esforços prolongados.',
-    assinaturaMedico: 'Dra. Maria Clara Oliveira - Perita Médica',
-    statusPreenchimento: 'assinado',
-    assinaturaDigital: {
-      assinado: true,
-      nomeSignatario: 'Dra. Maria Clara Oliveira',
-      documentoProfissional: 'CRM/PR 24.510',
-      uf: 'PR',
-      dataHoraAssinatura: new Date().toISOString(),
-      hashAutenticacao: 'SHA256:7F9A3B28C14E90B09923FEDC78A1',
-      cargoFuncao: 'Médica Perita Oficial do Município'
-    }
-  },
-  
-  assistenteSocial: {
-    nome: 'Dr. Carlos Eduardo Mendes',
-    cress: 'CRESS/PR 8.320',
-    ufCress: 'PR',
-    dataAvaliacao: new Date().toISOString().split('T')[0],
-    historicoSocial: 'Reside com a esposa e dois filhos em imóvel próprio com adaptações parciais. Necessita de apoio de terceiros para locomoção fora de casa e transporte público devido a barreiras de acessibilidade urbana.',
-    fatoresAmbientaisBarreiras: 'Barreiras arquitetônicas no transporte público e calçadas. Presença de apoio familiar efetivo.',
-    assinaturaSocial: 'Dr. Carlos Eduardo Mendes - Assistente Social',
-    statusPreenchimento: 'assinado',
-    assinaturaDigital: {
-      assinado: true,
-      nomeSignatario: 'Dr. Carlos Eduardo Mendes',
-      documentoProfissional: 'CRESS/PR 8.320',
-      uf: 'PR',
-      dataHoraAssinatura: new Date().toISOString(),
-      hashAutenticacao: 'SHA256:4C82E119A56D883719FF54009BA2',
-      cargoFuncao: 'Analista em Serviço Social Pericial'
-    }
-  },
-  
-  tiposDeficiencia: {
-    auditiva: false,
-    intelectualCognitiva: false,
-    motora: true,
-    visual: false,
-  },
-  
-  funcoesCorporais: {
-    mentaisGlobais: false,
-    mentaisEspecificas: false,
-    visao: false,
-    auditivas: false,
-    vestibulares: false,
-    dor: true,
-    sensoriaisAdicionais: false,
-    vozEFala: false,
-    cardiovascular: false,
-    hematologico: false,
-    imunologico: false,
-    respiratorio: false,
-    digestivo: false,
-    metabolismoEndocrino: false,
-    urinarias: false,
-    genitaisReprodutivas: false,
-    articuloesEOssos: true,
-    musculares: true,
-    movimentos: true,
-    pelePelosUnhas: false,
-  },
-  
-  questoesEmblematicas: {
-    auditivaSurdezAntes6Anos: null,
-    auditivaSemAuxilioTerceiros: null,
+// MODELO DE AVALIAÇÃO LIMPO E EM BRANCO PARA TESTES
+export const CRIAR_AVALIACAO_LIMPA = (): AvaliacaoCompleta => {
+  const numRandom = Math.floor(100 + Math.random() * 900);
+  const now = new Date().toISOString();
+  return {
+    id: `EVAL-${new Date().getFullYear()}-${numRandom}`,
+    dataCriacao: now,
+    dataAtualizacao: now,
+    status: 'Em Andamento',
+    statusGeral: 'solicitado_rh',
     
-    intelectualNaoFicaSozinhoSeguranca: null,
-    intelectualSemAuxilioTerceiros: null,
+    processoAdministrativo: {
+      numeroProcesso: '',
+      dataSolicitacao: now.split('T')[0],
+      motivoSolicitacao: 'Avaliação Biopsicossocial para Enquadramento Funcional (IF-BRA)',
+      orgaoSolicitante: 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP)',
+      gestorResponsavel: '',
+      matriculaGestor: '',
+      observacoesRH: '',
+      anexoNome: '',
+      anexoTamanho: '',
+      anexoDataUrl: '',
+      anexoTipo: ''
+    },
     
-    motoraCadeiraDeRodasExclusiva: false,
-    motoraSemAuxilioTerceiros: true,
+    servidor: {
+      nome: '',
+      rg: '',
+      cpf: '',
+      idade: '',
+      sexo: 'Masculino',
+      matricula: '',
+      cargo: '',
+      setorLotacao: '',
+      dataAdmissao: '',
+      telefone: '',
+      email: '',
+    },
     
-    visualNaoEnxergavaAoNascer: null,
-    visualSemAuxilioTerceiros: null,
-  },
-  
-  atividades: {
-    '1.1': 100, '1.2': 100, '1.3': 100, '1.4': 100, '1.5': 100,
-    '2.1': 100, '2.2': 100, '2.3': 100, '2.4': 100, '2.5': 100,
-    '3.1': 75,  '3.2': 75,  '3.3': 75,  '3.4': 100, '3.5': 75, '3.6': 50, '3.7': 50, '3.8': 75,
-    '4.1': 75,  '4.2': 75,  '4.3': 100, '4.4': 100, '4.5': 75, '4.6': 100, '4.7': 100, '4.8': 100,
-    '5.1': 100, '5.2': 75,  '5.3': 50,  '5.4': 75,  '5.5': 50,
-    '6.1': 100, '6.2': 100, '6.3': 75,  '6.4': 75,  '6.5': 100,
-    '7.1': 100, '7.2': 100, '7.3': 100, '7.4': 100, '7.5': 100, '7.6': 75, '7.7': 100, '7.8': 100,
-  },
-
-  atividadesMedico: {
-    '1.1': 100, '1.2': 100, '1.3': 100, '1.4': 100, '1.5': 100,
-    '2.1': 100, '2.2': 100, '2.3': 100, '2.4': 100, '2.5': 100,
-    '3.1': 75,  '3.2': 75,  '3.3': 75,  '3.4': 100, '3.5': 75, '3.6': 50, '3.7': 50, '3.8': 75,
-    '4.1': 75,  '4.2': 75,  '4.3': 100, '4.4': 100, '4.5': 75, '4.6': 100, '4.7': 100, '4.8': 100,
-    '5.1': 100, '5.2': 75,  '5.3': 50,  '5.4': 75,  '5.5': 50,
-    '6.1': 100, '6.2': 100, '6.3': 75,  '6.4': 75,  '6.5': 100,
-    '7.1': 100, '7.2': 100, '7.3': 100, '7.4': 100, '7.5': 100, '7.6': 75, '7.7': 100, '7.8': 100,
-  },
-
-  atividadesSocial: {
-    '1.1': 100, '1.2': 100, '1.3': 100, '1.4': 100, '1.5': 100,
-    '2.1': 100, '2.2': 100, '2.3': 100, '2.4': 100, '2.5': 100,
-    '3.1': 75,  '3.2': 75,  '3.3': 75,  '3.4': 100, '3.5': 75, '3.6': 50, '3.7': 50, '3.8': 75,
-    '4.1': 75,  '4.2': 75,  '4.3': 100, '4.4': 100, '4.5': 75, '4.6': 100, '4.7': 100, '4.8': 100,
-    '5.1': 100, '5.2': 75,  '5.3': 50,  '5.4': 75,  '5.5': 50,
-    '6.1': 100, '6.2': 100, '6.3': 75,  '6.4': 75,  '6.5': 100,
-    '7.1': 100, '7.2': 100, '7.3': 100, '7.4': 100, '7.5': 100, '7.6': 75, '7.7': 100, '7.8': 100,
-  },
-  
-  observacoesAtividades: {
-    '3.6': 'Dificuldade para caminhar mais de 100m sem dor intensa e risco de queda.',
-    '3.7': 'Ônibus municipal sem elevador adaptado no bairro do servidor.',
-    '5.3': 'Esposa auxilia na limpeza pesada da residência.',
-  },
-  observacoesAtividadesMedico: {
-    '3.6': 'Exame pericial confirma alteração de marcha e crepitação articular com dor intensa a palpação.',
-  },
-  observacoesAtividadesSocial: {
-    '3.6': 'Dificuldade para caminhar mais de 100m sem dor intensa e risco de queda.',
-  }
+    medico: {
+      nome: '',
+      crm: '',
+      ufCrm: 'PR',
+      dataAvaliacao: now.split('T')[0],
+      localAvaliacao: 'Consultório / Junta Médica',
+      informante: 'Próprio avaliado(a)',
+      cidPrincipal: '',
+      cidSequela: '',
+      dataInicioImpedimento: '',
+      historiaClinica: '',
+      assinaturaMedico: '',
+      statusPreenchimento: 'pendente'
+    },
+    
+    assistenteSocial: {
+      nome: '',
+      cress: '',
+      ufCress: 'PR',
+      dataAvaliacao: now.split('T')[0],
+      historicoSocial: '',
+      fatoresAmbientaisBarreiras: '',
+      assinaturaSocial: '',
+      statusPreenchimento: 'pendente'
+    },
+    
+    tiposDeficiencia: {
+      auditiva: false,
+      intelectualCognitiva: false,
+      motora: false,
+      visual: false,
+    },
+    
+    funcoesCorporais: {
+      mentaisGlobais: false,
+      mentaisEspecificas: false,
+      visao: false,
+      auditivas: false,
+      vestibulares: false,
+      dor: false,
+      sensoriaisAdicionais: false,
+      vozEFala: false,
+      cardiovascular: false,
+      hematologico: false,
+      imunologico: false,
+      respiratorio: false,
+      digestivo: false,
+      metabolismoEndocrino: false,
+      urinarias: false,
+      genitaisReprodutivas: false,
+      articuloesEOssos: false,
+      musculares: false,
+      movimentos: false,
+      pelePelosUnhas: false,
+    },
+    
+    questoesEmblematicas: {
+      auditivaSurdezAntes6Anos: null,
+      auditivaSemAuxilioTerceiros: null,
+      intelectualNaoFicaSozinhoSeguranca: null,
+      intelectualSemAuxilioTerceiros: null,
+      motoraCadeiraDeRodasExclusiva: null,
+      motoraSemAuxilioTerceiros: null,
+      visualNaoEnxergavaAoNascer: null,
+      visualSemAuxilioTerceiros: null,
+    },
+    
+    atividades: {},
+    atividadesMedico: {},
+    atividadesSocial: {},
+    observacoesAtividades: {},
+    observacoesAtividadesMedico: {},
+    observacoesAtividadesSocial: {},
+  };
 };
+
+export const RASCUNHO_INICIAL: AvaliacaoCompleta = CRIAR_AVALIACAO_LIMPA();
 
 export const CRIAR_NOVA_AVALIACAO_RH = (dadosServidor?: Partial<import('../types').ServidorData>, dadosProcesso?: Partial<import('../types').ProcessoAdministrativoData>): AvaliacaoCompleta => {
   const numRandom = Math.floor(100 + Math.random() * 900);
@@ -427,11 +387,11 @@ export const CRIAR_NOVA_AVALIACAO_RH = (dadosServidor?: Partial<import('../types
     processoAdministrativo: {
       numeroProcesso: dadosProcesso?.numeroProcesso || `PA-${new Date().getFullYear()}/00${numRandom}`,
       dataSolicitacao: dadosProcesso?.dataSolicitacao || now.split('T')[0],
-      motivoSolicitacao: dadosProcesso?.motivoSolicitacao || 'Avaliação Biopsicossocial para Enquadramento Funcional',
+      motivoSolicitacao: dadosProcesso?.motivoSolicitacao || 'Avaliação Biopsicossocial para Enquadramento Funcional (IF-BRA)',
       orgaoSolicitante: dadosProcesso?.orgaoSolicitante || 'Câmara Municipal de Curitiba - Diretoria de Gestão de Pessoas (DGEP)',
-      gestorResponsavel: dadosProcesso?.gestorResponsavel || 'Diretoria de Gestão de Pessoas',
-      matriculaGestor: dadosProcesso?.matriculaGestor || 'GP-001',
-      observacoesRH: dadosProcesso?.observacoesRH || 'Processo administrativo autuado. Aguardando laudos periciais.',
+      gestorResponsavel: dadosProcesso?.gestorResponsavel || '',
+      matriculaGestor: dadosProcesso?.matriculaGestor || '',
+      observacoesRH: dadosProcesso?.observacoesRH || '',
       anexoNome: dadosProcesso?.anexoNome || '',
       anexoTamanho: dadosProcesso?.anexoTamanho || '',
       anexoDataUrl: dadosProcesso?.anexoDataUrl || '',
@@ -527,4 +487,3 @@ export const CRIAR_NOVA_AVALIACAO_RH = (dadosServidor?: Partial<import('../types
     observacoesAtividadesSocial: {},
   };
 };
-

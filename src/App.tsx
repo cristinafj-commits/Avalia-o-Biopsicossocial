@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { Header, AppTab, UserRole } from './components/Header';
-import { ProfessionalQueueDashboard } from './components/ProfessionalQueueDashboard';
 import { RHManagementDashboard } from './components/RHManagementDashboard';
+import { ProfessionalQueueDashboard } from './components/ProfessionalQueueDashboard';
 import { Form1Identificacao } from './components/Form1Identificacao';
 import { Form2FuncoesCorporais } from './components/Form2FuncoesCorporais';
 import { Form3QuestoesEmblematicas } from './components/Form3QuestoesEmblematicas';
@@ -14,10 +14,10 @@ import { RecordsManagerModal } from './components/RecordsManagerModal';
 import { ManagementRequestsReportModal } from './components/ManagementRequestsReportModal';
 import { LoginPage } from './components/LoginPage';
 import { AvaliacaoCompleta, AuthUser } from './types';
-import { RASCUNHO_INICIAL, ATIVIDADES_IFBRA_DEF, FUNCOES_CIF_DEF } from './data/initialData';
+import { RASCUNHO_INICIAL, ATIVIDADES_IFBRA_DEF, FUNCOES_CIF_DEF, CRIAR_AVALIACAO_LIMPA } from './data/initialData';
 import { calcularAvaliacaoBiopsicossocial } from './utils/fuzzyCalculator';
 
-const STORAGE_KEY = 'SISTEMA_BIOPSICOSSOCIAL_RECORDS_V2';
+const STORAGE_KEY = 'SISTEMA_BIOPSICOSSOCIAL_RECORDS_V3';
 const AUTH_KEY = 'CMC_AUTH_USER_SESSION_V1';
 
 export default function App() {
@@ -52,16 +52,22 @@ export default function App() {
           setSavedRecords(parsed);
           setCurrentEval(parsed[0]);
         } else {
-          setSavedRecords([RASCUNHO_INICIAL]);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify([RASCUNHO_INICIAL]));
+          const fresh = CRIAR_AVALIACAO_LIMPA();
+          setSavedRecords([fresh]);
+          setCurrentEval(fresh);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify([fresh]));
         }
       } else {
-        setSavedRecords([RASCUNHO_INICIAL]);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([RASCUNHO_INICIAL]));
+        const fresh = CRIAR_AVALIACAO_LIMPA();
+        setSavedRecords([fresh]);
+        setCurrentEval(fresh);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([fresh]));
       }
     } catch (e) {
       console.error('Erro ao carregar dados do localStorage:', e);
-      setSavedRecords([RASCUNHO_INICIAL]);
+      const fresh = CRIAR_AVALIACAO_LIMPA();
+      setSavedRecords([fresh]);
+      setCurrentEval(fresh);
     }
   }, []);
 
@@ -131,36 +137,28 @@ export default function App() {
 
   // Create brand new blank evaluation
   const handleNewEval = () => {
-    const newId = `EVAL-${Date.now()}`;
-    const newRecord: AvaliacaoCompleta = {
-      ...RASCUNHO_INICIAL,
-      id: newId,
-      dataCriacao: new Date().toISOString(),
-      dataAtualizacao: new Date().toISOString(),
-      servidor: {
-        ...RASCUNHO_INICIAL.servidor,
-        nome: '',
-        rg: '',
-        cpf: '',
-        idade: '',
-        matricula: '',
-        cargo: '',
-      },
-      medico: {
-        ...RASCUNHO_INICIAL.medico,
-        cidPrincipal: '',
-        historiaClinica: '',
-      }
-    };
-
-    setCurrentEval(newRecord);
+    const freshRecord = CRIAR_AVALIACAO_LIMPA();
+    setCurrentEval(freshRecord);
     setSavedRecords(prev => {
-      const next = [newRecord, ...prev];
+      const next = [freshRecord, ...prev];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       return next;
     });
     setActiveTab('form1');
     showToast('Nova avaliação em branco iniciada!');
+  };
+
+  // Clear all records from storage and start 100% fresh for clean testing
+  const handleClearAllRecords = () => {
+    const freshRecord = CRIAR_AVALIACAO_LIMPA();
+    setSavedRecords([freshRecord]);
+    setCurrentEval(freshRecord);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([freshRecord]));
+    } catch (e) {
+      console.error('Falha ao limpar registros:', e);
+    }
+    showToast('Sistema limpo com sucesso! Todos os cadastros e dados foram redefinidos para teste.');
   };
 
   // Switch active evaluation record
@@ -175,7 +173,11 @@ export default function App() {
   // Delete an evaluation record
   const handleDeleteRecord = (id: string) => {
     if (savedRecords.length <= 1) {
-      showToast('Não é possível excluir o único registro.');
+      const freshRecord = CRIAR_AVALIACAO_LIMPA();
+      setSavedRecords([freshRecord]);
+      setCurrentEval(freshRecord);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([freshRecord]));
+      showToast('Registro redefinido para estado em branco.');
       return;
     }
     const updated = savedRecords.filter(r => r.id !== id);
@@ -203,7 +205,7 @@ export default function App() {
     showToast('Avaliação importada com sucesso!');
   };
 
-  // Export full multi-sheet Excel file matching Google Sheets format!
+  // Export full multi-sheet Excel file matching Google Sheets format
   const handleExportExcel = () => {
     const calc = calcularAvaliacaoBiopsicossocial(currentEval);
 
@@ -299,9 +301,15 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500 selection:text-white">
-      
-      {/* HEADER WITH ALL TABS */}
+    <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900">
+      {/* GLOBAL TOAST NOTIFICATION */}
+      {toastMessage && (
+        <div className="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xl border border-slate-700 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          {toastMessage}
+        </div>
+      )}
+
+      {/* HEADER COMPONENT */}
       <Header
         userRole={userRole}
         setUserRole={setUserRole}
@@ -312,105 +320,104 @@ export default function App() {
         onNewEval={handleNewEval}
         onOpenRecords={() => setIsModalOpen(true)}
         onOpenManagementReport={() => setIsManagementReportOpen(true)}
-        grauFinal={calc.grauDeficienciaFuzzy}
+        grauFinal={calc.grauDeficienciaFuzzySoma}
         currentUser={currentUser}
         onLogout={handleLogout}
       />
 
-      {/* TOAST NOTIFICATION */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-indigo-600 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-lg border border-indigo-500 flex items-center space-x-2 animate-bounce">
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {/* MAIN CONTENT CANVAS */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        
-        {/* RH MANAGEMENT DASHBOARD */}
+      {/* MAIN VIEW CONTENT */}
+      <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+        {/* RH DASHBOARD */}
         {activeTab === 'rh_dashboard' && (
           <RHManagementDashboard
             records={savedRecords}
             currentEval={currentEval}
-            onSelectRecord={(id) => {
+            onSelectRecord={id => {
               handleSelectRecord(id);
             }}
-            onCreateRecord={(newRecord) => {
-              setCurrentEval(newRecord);
+            onCreateRecord={newRec => {
               setSavedRecords(prev => {
-                const next = [newRecord, ...prev];
+                const next = [newRec, ...prev];
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
                 return next;
               });
-              showToast(`Processo ${newRecord.processoAdministrativo?.numeroProcesso || 'PA'} criado e enviado para Perícias!`);
+              setCurrentEval(newRec);
+              showToast(`Processo "${newRec.processoAdministrativo.numeroProcesso}" cadastrado com sucesso!`);
             }}
-            onUpdateRecord={(record) => {
-              handleUpdateEval(() => record);
+            onUpdateRecord={upRec => {
+              setSavedRecords(prev => {
+                const next = prev.map(r => r.id === upRec.id ? upRec : r);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+                return next;
+              });
+              if (currentEval.id === upRec.id) {
+                setCurrentEval(upRec);
+              }
+              showToast('Status do processo atualizado.');
             }}
             onDeleteRecord={handleDeleteRecord}
-            onViewConsolidado={(id) => {
-              handleSelectRecord(id);
+            onViewConsolidado={recId => {
+              handleSelectRecord(recId);
               setActiveTab('consolidado');
             }}
-            onSwitchToMedico={(id) => {
-              handleSelectRecord(id);
+            onSwitchToMedico={recId => {
+              handleSelectRecord(recId);
               setUserRole('medico');
-              setActiveTab('form1');
-              showToast('Alternado para Perfil Médico Perito');
+              setActiveTab('medico_dashboard');
             }}
-            onSwitchToSocial={(id) => {
-              handleSelectRecord(id);
+            onSwitchToSocial={recId => {
+              handleSelectRecord(recId);
               setUserRole('social');
-              setActiveTab('social');
-              showToast('Alternado para Perfil Assistente Social');
+              setActiveTab('social_dashboard');
             }}
           />
         )}
 
-        {/* FILA DE PERÍCIAS MÉDICAS PENDENTES (MÉDICO PERITO) */}
+        {/* PERITO MÉDICO DASHBOARD */}
         {activeTab === 'medico_dashboard' && (
           <ProfessionalQueueDashboard
             role="medico"
             records={savedRecords}
             currentEvalId={currentEval.id}
-            onSelectAndOpenForm={(id) => {
-              handleSelectRecord(id);
+            onSelectAndOpenForm={recId => {
+              handleSelectRecord(recId);
               setActiveTab('form1');
-              const rec = savedRecords.find(r => r.id === id);
-              showToast(`Perícia Médica iniciada para ${rec?.servidor.nome || 'o servidor'}`);
             }}
-            onViewConsolidado={(id) => {
-              handleSelectRecord(id);
+            onViewConsolidado={recId => {
+              handleSelectRecord(recId);
               setActiveTab('consolidado');
             }}
           />
         )}
 
-        {/* FILA DE AVALIAÇÕES SOCIAIS PENDENTES (ASSISTENTE SOCIAL) */}
+        {/* ASSISTENTE SOCIAL DASHBOARD */}
         {activeTab === 'social_dashboard' && (
           <ProfessionalQueueDashboard
             role="social"
             records={savedRecords}
             currentEvalId={currentEval.id}
-            onSelectAndOpenForm={(id) => {
-              handleSelectRecord(id);
+            onSelectAndOpenForm={recId => {
+              handleSelectRecord(recId);
               setActiveTab('social');
-              const rec = savedRecords.find(r => r.id === id);
-              showToast(`Avaliação Social iniciada para ${rec?.servidor.nome || 'o servidor'}`);
             }}
-            onViewConsolidado={(id) => {
-              handleSelectRecord(id);
+            onViewConsolidado={recId => {
+              handleSelectRecord(recId);
               setActiveTab('consolidado');
             }}
           />
         )}
 
+        {/* FORMS DAS ETAPAS PERICIAIS */}
         {activeTab === 'form1' && (
           <Form1Identificacao
             evalData={currentEval}
             updateEval={handleUpdateEval}
             onNextTab={() => setActiveTab('form2')}
-            onBackToQueue={() => setActiveTab('medico_dashboard')}
+            onBackToQueue={() => {
+              if (userRole === 'medico') setActiveTab('medico_dashboard');
+              else if (userRole === 'social') setActiveTab('social_dashboard');
+              else setActiveTab('rh_dashboard');
+            }}
           />
         )}
 
@@ -438,11 +445,8 @@ export default function App() {
             updateEval={handleUpdateEval}
             onPrevTab={() => setActiveTab('form3')}
             onNextTab={() => {
-              if (userRole === 'medico') {
-                setActiveTab('consolidado');
-              } else {
-                setActiveTab('social');
-              }
+              setActiveTab('medico_dashboard');
+              showToast('Avaliação médica das 29 atividades concluída!');
             }}
           />
         )}
@@ -487,15 +491,15 @@ export default function App() {
         onNewRecord={handleNewEval}
         onDeleteRecord={handleDeleteRecord}
         onImportJson={handleImportJson}
+        onClearAllRecords={handleClearAllRecords}
       />
 
-      {/* RELATÓRIO GERENCIAL DE SOLICITAÇÕES E RESULTADOS */}
+      {/* MANAGEMENT REPORT MODAL */}
       <ManagementRequestsReportModal
         isOpen={isManagementReportOpen}
         onClose={() => setIsManagementReportOpen(false)}
         records={savedRecords}
       />
-
     </div>
   );
 }
